@@ -9,7 +9,7 @@ abstract class BaseManager
     private static $managers = array();
     private static $messages = array();
     private static $cached_configs = false;
-    const CACHE_FILE = '../cache.json';
+    const CACHE_FILE = /* ABSPATH . */ 'wp-content/config-manager.json';
 
     protected $name; // Must be set
     protected $theme;
@@ -79,7 +79,7 @@ abstract class BaseManager
 
     private static function preloadConfigs()
     {
-        $cache_file = __DIR__ . '/' . self::CACHE_FILE;
+        $cache_file = ABSPATH . self::CACHE_FILE;
         if (file_exists($cache_file)) {
             $cache = json_decode(file_get_contents($cache_file), true);
 
@@ -101,7 +101,7 @@ abstract class BaseManager
 
     public static function clearCache()
     {
-        $cache_file = __DIR__ . '/' . self::CACHE_FILE;
+        $cache_file = ABSPATH . self::CACHE_FILE;
         if (file_exists($cache_file)) {
             unlink($cache_file);
         }
