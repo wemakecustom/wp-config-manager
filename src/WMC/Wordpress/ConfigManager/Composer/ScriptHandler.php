@@ -14,9 +14,9 @@ class ScriptHandler
         $extras   = $composer->getPackage()->getExtra();
         $web_dir  = getcwd() . '/' . (empty($extras['web-dir']) ? 'htdocs' : $extras['web-dir']);
 
-        require_once $web_dir . '/wp-load.php';
+        $io->write('<info>Clearing cache of Config Manager</info>');
 
-        $io->write('<info>Clearing cache of Config Manager.</info>');
+        define('ABSPATH', $web_dir . '/');
         BaseManager::clearCache();
     }
 }
