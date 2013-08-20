@@ -11,7 +11,7 @@
         }
     ],
     "autoload": {
-        "psr-0": { "WMC/Wordpress/ConfigManager": "src/" }
+        "psr-0": { "WMC\\Wordpress\\ConfigManager": "src/" }
     },
     "require": {
         "wemakecustom/wp-skeleton": ">=3.6",

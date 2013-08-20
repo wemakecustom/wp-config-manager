@@ -2,6 +2,7 @@
 
 namespace WMC\Wordpress\ConfigManager\Composer;
 
+use Composer\Script\Event;
 use WMC\Wordpress\ConfigManager\BaseManager;
 
 class ScriptHandler
