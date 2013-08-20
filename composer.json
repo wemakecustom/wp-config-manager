@@ -14,6 +14,7 @@
         "psr-0": { "WMC/Wordpress/ConfigManager": "src/" }
     },
     "require": {
-        "wemakecustom/wp-skeleton": ">=3.6"
+        "wemakecustom/wp-skeleton": ">=3.6",
+        "composer/installers": "~1.0"
     }
 }
