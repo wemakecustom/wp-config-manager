@@ -131,7 +131,7 @@ class Types extends BaseManager
 
         // Ensure plugin is loaded
         self::writeConfigs("plugins/types", array(
-            'plugins' => array('types' => 'Types'),
+            'plugins' => array('wp-types' => 'Types'),
         ));
     }
 }
