@@ -28,7 +28,9 @@ class Types extends BaseManager
         $index   = array();
         $configs = $this->getConfigs();
         $current = get_option('types-manager-index', array());
-        $changed = false;
+
+        $_POST['overwrite-groups'] = $_POST['overwrite-types'] = $_POST['overwrite-fields'] = $_POST['overwrite-tax'] = 1;
+        $import = array();
 
         foreach ($configs as $export_type => $types) {
             if (empty($types['__key']))  continue;
@@ -40,48 +42,27 @@ class Types extends BaseManager
                 $index[$export_type][$id] = md5(serialize($data));
 
                 if (!isset($current[$export_type][$id]) || $current[$export_type][$id] != $index[$export_type][$id]) {
-                    $this->import($export_type, $__key, $id, $data);
-                    $changed = true;
+                    // Import function checks for this
+                    $_POST[$export_type][$id] = array('add' => true, 'update' => true);
+                    $import[$export_type]['__key'] = $__key;
+                    $import[$export_type][$id] = $data;
                 }
             }
         }
 
-        if ($changed) {
+        if (count($import)) {
             require_once WPCF_INC_ABSPATH . '/fields.php';
             require_once WPCF_INC_ABSPATH . '/import-export.php';
+
+            $xml = self::toXml($import, 'types');
+            foreach ($import as $export_type => $_) {
+                wpcf_admin_import_data($xml, false, $export_type);
+            }
 
             wpcf_init_custom_types_taxonomies();
             flush_rewrite_rules();
             update_option('types-manager-index', $index);
         }
-    }
-
-    /**
-     * Import a single type
-     */
-    private function import($export_type, $__key, $id, $data)
-    {
-        require_once WPCF_INC_ABSPATH . '/fields.php';
-        require_once WPCF_INC_ABSPATH . '/import-export.php';
-
-        $data['add'] = $data['update'] = true;
-
-        // Import function checks for this
-        $_POST[$export_type][$id] = 1;
-        $_POST['overwrite-groups'] = $_POST['overwrite-types'] = $_POST['overwrite-fields'] = $_POST['overwrite-tax'] = 1;
-
-        $xml = self::toXml(array(
-            $export_type => array(
-                $id => $data,
-                '__key' => $__key
-            )
-        ), 'types');
-        $updated = wpcf_admin_import_data($xml, false, $export_type);
-
-        // Undo our hack
-        unset($_POST['items'][$export_type][$id], $_POST['overwrite-groups'], $_POST['overwrite-types'], $_POST['overwrite-fields'], $_POST['overwrite-tax']);
-
-        return $updated;
     }
 
     private static function toXml($data, $root_element)
