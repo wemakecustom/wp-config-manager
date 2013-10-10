@@ -16,7 +16,10 @@ class ScriptHandler
 
         $io->write('<info>Clearing cache of Config Manager</info>');
 
-        define('ABSPATH', $web_dir . '/');
+        if (!defined('ABSPATH')) {
+            define('ABSPATH', $web_dir . '/');
+        }
+
         BaseManager::clearCache();
     }
 }
