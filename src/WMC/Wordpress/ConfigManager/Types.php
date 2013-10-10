@@ -64,8 +64,10 @@ class Types extends BaseManager
         require_once WPCF_INC_ABSPATH . '/fields.php';
         require_once WPCF_INC_ABSPATH . '/import-export.php';
 
+        $data['add'] = $data['update'] = true;
+
         // Import function checks for this
-        $_POST['items'][$export_type][$id] = 1;
+        $_POST[$export_type][$id] = 1;
         $_POST['overwrite-groups'] = $_POST['overwrite-types'] = $_POST['overwrite-fields'] = $_POST['overwrite-tax'] = 1;
 
         $xml = self::toXml(array(
@@ -74,7 +76,7 @@ class Types extends BaseManager
                 '__key' => $__key
             )
         ), 'types');
-        $updated = wpcf_admin_import_data($xml, false);
+        $updated = wpcf_admin_import_data($xml, false, $export_type);
 
         // Undo our hack
         unset($_POST['items'][$export_type][$id], $_POST['overwrite-groups'], $_POST['overwrite-types'], $_POST['overwrite-fields'], $_POST['overwrite-tax']);
