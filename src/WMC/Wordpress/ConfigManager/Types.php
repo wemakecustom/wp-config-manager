@@ -100,6 +100,7 @@ class Types extends BaseManager
                 // We provide our own checksums, but still leave them or the import will complain
                 $type['hash'] = '';
                 $type['checksum'] = '';
+                unset($type['data']['is_new']);
 
                 $type_data = array($export_type => array($id => $type, '__key' => $tagname));
                 self::writeConfigs("types/$export_type/$id", $type_data);
