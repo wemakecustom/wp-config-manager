@@ -180,6 +180,7 @@ abstract class BaseManager
             $theme->get_stylesheet_directory()     => '<?php echo $theme_dir; ?>',
             site_url()                             => '<?php echo site_url(); ?>',
             ABSPATH                                => '<?php echo ABSPATH; ?>',
+            WP_CONTENT_URL . '/components'         => '<?php echo $components_uri; ?>',
         );
 
         return str_replace(array_keys($mappings), array_values($mappings), $yml);
@@ -239,8 +240,9 @@ abstract class BaseManager
     {
         if (!is_file($file) || !preg_match('/\.ya?ml$/', $file)) return;
 
-        $theme_dir = $theme->get_stylesheet_directory();
-        $theme_uri = $theme->get_stylesheet_directory_uri();
+        $theme_dir      = $theme->get_stylesheet_directory();
+        $theme_uri      = $theme->get_stylesheet_directory_uri();
+        $components_uri = WP_CONTENT_URL . '/components';
 
         ob_start();
         include($file);
