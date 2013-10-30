@@ -9,7 +9,7 @@ class Plugins extends BaseManager
     {
         $manager = new static();
 
-        add_action('tgmpa_register', array($manager, 'register'));
+        add_action('required_plugins_register', array($manager, 'register'));
 
         return $manager;
     }
@@ -22,7 +22,7 @@ class Plugins extends BaseManager
         $configs = $this->getConfigs();
         if (empty($configs['plugins'])) return;
 
-        tgmpa($configs['plugins'], $configs['configs']);
+        required_plugins_register($configs['plugins'], $configs['configs']);
 
         add_filter('plugin_action_links', array($this, 'plugin_action_links'), /* priority */ 20, /* arguments */ 2);
     }
