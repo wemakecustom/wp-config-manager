@@ -2,6 +2,7 @@
     "name": "wemakecustom/wp-config-manager",
     "type": "wordpress-plugin",
     "description": "Loader for different types of configuration stored in files in themes’ directory",
+    "keywords": ["wordpress","plugins"],
     "license": "GPL-2.0",
     "authors": [
         {
@@ -16,6 +17,7 @@
     "require": {
         "wemakecustom/wp-skeleton": "*",
         "wemakecustom/wp-mu-config-manager": "*",
+        "wemakecustom/wp-mu-composer": "*",
         "composer/installers": "~1.0"
     },
     "extra": {
