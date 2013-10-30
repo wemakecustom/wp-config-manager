@@ -18,6 +18,7 @@
         "wemakecustom/wp-skeleton": "*",
         "wemakecustom/wp-mu-config-manager": "*",
         "wemakecustom/wp-mu-composer": "*",
+        "symfony/yaml": "*",
         "composer/installers": "~1.0"
     },
     "extra": {
