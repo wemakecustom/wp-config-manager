@@ -63,6 +63,8 @@ class Types extends BaseManager
             flush_rewrite_rules();
             update_option('types-manager-index', $index);
         }
+
+        unset($_POST['overwrite-groups'], $_POST['overwrite-types'], $_POST['overwrite-fields'], $_POST['overwrite-tax']);
     }
 
     private static function toXml($data, $root_element)
