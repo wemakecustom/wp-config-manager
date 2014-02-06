@@ -99,10 +99,7 @@ class Types extends BaseManager
                     $type['ID'] = $id = $type['__types_id'];
                 }
 
-                // We provide our own checksums, but still leave them or the import will complain
-                $type['hash'] = '';
-                $type['checksum'] = '';
-                unset($type['data']['is_new']);
+                $this->normalizeType($type, $export_type);
 
                 $type_data = array($export_type => array($id => $type, '__key' => $tagname));
                 self::writeConfigs("types/$export_type/$id", $type_data);
@@ -119,5 +116,19 @@ class Types extends BaseManager
         self::writeConfigs("plugins/types", array(
             'plugins' => array('wp-types' => 'Types'),
         ));
+    }
+
+    protected function normalizeType(array &$type, $export_type)
+    {
+        // We provide our own checksums, but still leave them or the import will complain
+        $type['hash'] = '';
+        $type['checksum'] = '';
+        unset($type['data']['is_new']);
+
+        if ($export_type == 'fields') {
+            if (empty($type['data']['repetitive'])) {
+                $type['data']['repetitive'] = 0;
+            }
+        }
     }
 }
