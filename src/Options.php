@@ -7,6 +7,10 @@ namespace WMC\Wordpress\ConfigManager;
  */
 class Options extends BaseManager
 {
+    protected static $watchedOptions = array(
+        'blogname',
+        'blogdescription',
+    );
 
     public static function registerHook()
     {
@@ -14,6 +18,10 @@ class Options extends BaseManager
 
         add_action('admin_init', array($manager, 'register'));
         add_action('customize_save', array($manager, 'customize_save'));
+
+        foreach (self::$watchedOptions as $option) {
+            add_action('update_option_' . $option, array($manager, 'options_save'));
+        }
 
         return $manager;
     }
@@ -30,6 +38,46 @@ class Options extends BaseManager
                 update_option($key, $value);
             }
         }
+    }
+
+    protected function options_merge_save($options)
+    {
+        if (!$options) {
+            return;
+        }
+
+        $options = array_merge($this->getConfigs(), $options);
+
+        $split = array();
+
+        foreach ($options as $option => $value) {
+            switch ($option) {
+                case 'blogname':
+                case 'blogdescription':
+                    $split['title'][$option] = $value;
+                    break;
+
+                default:
+                    $split['customize'][$option] = $value;
+                    break;
+            }
+        }
+
+        foreach ($split as $group => $groupOptions) {
+            ksort($groupOptions);
+            static::writeConfigs("options/${group}", $groupOptions);
+        }
+    }
+
+    public function options_save()
+    {
+        $options = array();
+
+        foreach (self::$watchedOptions as $option) {
+            $options[$option] = get_option($option);
+        }
+
+        $this->options_merge_save($options);
     }
 
     /**
@@ -52,9 +100,7 @@ class Options extends BaseManager
                 }
             }
         }
-        if ($options) {
-            ksort($options);
-            static::writeConfigs("options/customize", $options);
-        }
+
+        $this->options_merge_save($options);
     }
 }
