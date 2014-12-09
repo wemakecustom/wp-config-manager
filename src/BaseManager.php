@@ -3,6 +3,7 @@
 namespace WMC\Wordpress\ConfigManager;
 
 use Symfony\Component\Yaml\Yaml;
+use Symfony\Component\Yaml\Exception\ParseException;
 
 abstract class BaseManager
 {
@@ -248,7 +249,12 @@ abstract class BaseManager
         include($file);
         $content = ob_get_clean();
 
-        self::array_overwrite($this->configs, Yaml::parse($content));
+        try {
+            $config = Yaml::parse($content);
+            self::array_overwrite($this->configs, $config);
+        } catch (ParseException $e) {
+            trigger_error("Error while parsing ${file}: " . $e->getMessage(), E_USER_WARNING);
+        }
     }
 
     /**
