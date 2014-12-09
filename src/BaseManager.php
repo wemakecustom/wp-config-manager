@@ -288,9 +288,4 @@ abstract class BaseManager
         static::array_overwrite($defaults, $original);
         $original = $defaults;
     }
-
-    protected static function error($msg, $level = E_USER_ERROR)
-    {
-        trigger_error($this->name . ": $msg", $level);
-    }
 }
