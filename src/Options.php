@@ -17,11 +17,11 @@ class Options extends BaseManager
         $manager = new static();
 
         add_action('admin_init', array($manager, 'register'));
-        add_action('customize_save', array($manager, 'customize_save'));
+        // add_action('customize_save', array($manager, 'customize_save'));
 
-        foreach (self::$watchedOptions as $option) {
-            add_action('update_option_' . $option, array($manager, 'options_save'));
-        }
+        // foreach (self::$watchedOptions as $option) {
+        //     add_action('update_option_' . $option, array($manager, 'options_save'));
+        // }
 
         return $manager;
     }

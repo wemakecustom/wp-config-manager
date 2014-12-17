@@ -53,12 +53,14 @@ abstract class BaseManager
     {
         $plugins = array();
 
-        foreach (glob(__DIR__ . '/*.php') as $file) {
-            if ($file != __FILE__) {
-                require_once $file;
-                $plugins[] = 'WMC\Wordpress\ConfigManager\\' . basename($file, '.php');
-            }
-        }
+        $plugins[] = 'WMC\Wordpress\ConfigManager\Assets';
+        $plugins[] = 'WMC\Wordpress\ConfigManager\Categories';
+        $plugins[] = 'WMC\Wordpress\ConfigManager\MediaSizes';
+        $plugins[] = 'WMC\Wordpress\ConfigManager\Options';
+        $plugins[] = 'WMC\Wordpress\ConfigManager\Plugins';
+        $plugins[] = 'WMC\Wordpress\ConfigManager\Sidebars';
+        $plugins[] = 'WMC\Wordpress\ConfigManager\ThemeOptions';
+        // $plugins[] = 'WMC\Wordpress\ConfigManager\Types';
 
         return apply_filters('config_manager_plugins', $plugins);
     }

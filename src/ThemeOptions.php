@@ -10,7 +10,7 @@ class ThemeOptions extends BaseManager
         $manager = new static();
 
         add_action('after_setup_theme', array($manager, 'register'));
-        add_action('customize_save', array($manager, 'customize_save'));
+        // add_action('customize_save', array($manager, 'customize_save'));
 
         return $manager;
     }
