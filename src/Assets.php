@@ -63,9 +63,14 @@ class Assets extends BaseManager
             foreach ($assets[$mode] as $id => $params) {
                 if (null !== $params['admin'] && $params['admin'] != is_admin()) continue;
 
-                if (preg_match('!^//!', $params['url'])) {
+                if (substr($params['url'], 0, 2) === '//') {
                     // Wordpress is not compatible with // urls, fix them
                     $params['url'] = (empty($_SERVER['HTTPS']) ? 'http:' : 'https:') . $params['url'];
+                }
+
+                if (!empty($_SERVER['HTTPS']) && strpos($params['url'], 'http://' . $_SERVER['HTTP_HOST'] . '/') === 0) {
+                    // http url on same server and we are in https, switch it.
+                    $params['url'] = 'https' . substr($params['url'], 4);
                 }
 
                 switch ($mode) {
